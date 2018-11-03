@@ -7,6 +7,6 @@ RUN dotnet publish dotnetKonf.Web/dotnetKonf.Web.csproj --output /dotnetkonf/ --
 
 FROM microsoft/dotnet:2.1-aspnetcore-runtime
 WORKDIR /dotnetkonf
-COPY --from=builder /dotnetconf .
+COPY --from=builder /dotnetkonf .
 
 ENTRYPOINT ["dotnet", "dotnetKonf.Web.dll"]
