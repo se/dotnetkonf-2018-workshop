@@ -26,8 +26,8 @@ node {
     stage("Docker Build") {
         dir("./src") {
             sh "docker build -t registry.gitlab.com/selcukermaya/dotnetkonf ."
-            sh "docker tag registry.gitlab.com/selcukermaya/dotnetkonf:latest"
-            sh "docker tag registry.gitlab.com/selcukermaya/dotnetkonf:build-${buildNumber}"
+            sh "docker tag registry.gitlab.com/selcukermaya/dotnetkonf registry.gitlab.com/selcukermaya/dotnetkonf:latest"
+            sh "docker tag registry.gitlab.com/selcukermaya/dotnetkonf registry.gitlab.com/selcukermaya/dotnetkonf:build-${buildNumber}"
         }
     }
     stage("Docker Push") {
