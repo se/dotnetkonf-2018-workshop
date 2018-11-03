@@ -51,12 +51,22 @@ node {
     stage("Git") {
         git credentialsId: 'gitlab', url: 'git@gitlab.com:selcukermaya/dotnetkonf.git'
     }
+    stage("Sonar Begin") {
+        withCredentials([string(credentialsId: 'sonar-token', variable: 'DOTNETKONF_SONAR_TOKEN')]) {
+            sh 'dotnet sonarscanner begin /k:"dotnetkonf-test" /d:sonar.host.url="https://cq-test.monofor.com" /d:sonar.login="$DOTNETKONF_SONAR_TOKEN" /d:sonar.cs.opencover.reportsPaths=".sonarqube/coverage/api.opencover.xml"'
+        }
+    }
     stage("Build") {
         sh "dotnet build"
     }    
     stage("Build") {
         sh "dotnet test ./test/dotnetKonf.Web.Test/dotnetKonf.Web.Test.csproj"
     }    
+    stage("Sonar End") {
+        withCredentials([string(credentialsId: 'sonar-token', variable: 'DOTNETKONF_SONAR_TOKEN')]) {
+            sh 'dotnet sonarscanner end /d:sonar.login="$DOTNETKONF_SONAR_TOKEN"'
+        }
+    }
     stage("Docker Build") {
         dir("./src") {
             sh "docker build -t registry.gitlab.com/selcukermaya/dotnetkonf ."
