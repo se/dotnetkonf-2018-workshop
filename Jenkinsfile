@@ -59,9 +59,9 @@ node {
     stage("Build") {
         sh "dotnet build"
     }    
-    stage("Build") {
-        sh "dotnet test ./test/dotnetKonf.Web.Test/dotnetKonf.Web.Test.csproj"
-    }    
+    stage("Test"){
+        sh 'dotnet test ./test/dotnetKonf.Web.Test/dotnetKonf.Web.Test.csproj /p:CollectCoverage=true /p:CoverletOutputFormat=opencover /p:CoverletOutput=../../.sonarqube/coverage/api.opencover.xml'
+    }
     stage("Sonar End") {
         withCredentials([string(credentialsId: 'sonar-token', variable: 'DOTNETKONF_SONAR_TOKEN')]) {
             sh 'dotnet sonarscanner end /d:sonar.login="$DOTNETKONF_SONAR_TOKEN"'
