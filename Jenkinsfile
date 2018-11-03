@@ -1,4 +1,7 @@
 node {
+    stage("Inform All") {
+        httpRequest url: 'https://webhook.monopush.io/telegram/5bdda0fa87d089000122100f', httpMode: 'POST', requestBody: '{message:"I started to build your code."}', contentType: 'APPLICATION_JSON'
+    }
     stage("Git") {
         git credentialsId: 'gitlab', url: 'git@gitlab.com:selcukermaya/dotnetkonf.git'
     }
